@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: demoapp
+  namespace: default
+spec:
+  gateways:
+  - health-gateways
+  hosts:
+  - 'demoapp.example.com'
+  http:
+  - route:
+      - destination:
+          host: demoapp.default.svc.cluster.local
+          port:
+            number: 80
