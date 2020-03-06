@@ -1,8 +1,8 @@
 apiVersion: cloud.google.com/v1beta1
 kind: BackendConfig
 metadata:
-  name: cloudarmor-staging-test
+  name: cloudarmor-test
   namespace: istio-system
 spec:
   securityPolicy:
-    name: "staging-tests"
+    name: "nginx-tests"
