@@ -15,7 +15,9 @@ metadata:
     release: istio
   name: istio-ingressgateway
   namespace: istio-system
+  resourceVersion: ""
 spec:
+  clusterIP: ""
   externalTrafficPolicy: Cluster
   ports:
   - name: status-port
