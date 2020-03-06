@@ -4,7 +4,7 @@ metadata:
   name: ingress-istio-staging
   namespace: istio-system
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: staging-test
+    #kubernetes.io/ingress.global-static-ip-name: staging-test
 spec:
   tls:
     - secretName: test-secret
