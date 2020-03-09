@@ -16,7 +16,7 @@ if [ -z "$CLUSTER_NAME" ]; then
   exit 1
 else
   CLUSTER_NAME_RESULT=`gcloud container clusters list --filter "name:$CLUSTER_NAME"`
-  if [ -z $CLUSTER_NAME_RESULT]; then
+  if [ -z $CLUSTER_NAME_RESULT ]; then
      echo "$CLUSTER_NAME is not a valid cluster"
      exit 1
   fi
