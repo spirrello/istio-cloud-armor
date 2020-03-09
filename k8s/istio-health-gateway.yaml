@@ -47,10 +47,14 @@ spec:
       number: 80
       name: http
       protocol: HTTP
+    hosts:
+    - "*"
   - port:
       number: 443
       name: https
       protocol: HTTP
+    hosts:
+    - "*"
   - port:
       number: 15020
       name: healthcheck
