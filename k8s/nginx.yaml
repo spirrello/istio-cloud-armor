@@ -63,7 +63,7 @@ spec:
   gateways:
   - nginx
   hosts:
-  - 'nginx.example.com'
+  - "nginx.example.com"
   http:
   - route:
       - destination:
