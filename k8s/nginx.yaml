@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       annotations:
@@ -63,7 +63,7 @@ metadata:
   namespace: default
 spec:
   gateways:
-  - istio-gateway
+  - istio-gateway.istio-system.svc.cluster.local
   hosts:
   - "nginx.example.com"
   http:

@@ -26,10 +26,10 @@ metadata:
   #annotations:
     #kubernetes.io/ingress.global-static-ip-name: staging-test
 spec:
-  tls:
-  - hosts:
-    - nginx.example.com
-    secretName: testsecret-tls
+  # tls:
+  # - hosts:
+  #   - nginx.example.com
+  #   secretName: testsecret-tls
   rules:
     - host: nginx.example.com
       http:
@@ -38,13 +38,13 @@ spec:
           backend:
             serviceName: istio-ingressgateway
             servicePort: 80
-    - host: nginx.example.com
-      http:
-        paths:
-        - path: /
-          backend:
-            serviceName: istio-ingressgateway
-            servicePort: 443
+    # - host: nginx.example.com
+    #   http:
+    #     paths:
+    #     - path: /
+    #       backend:
+    #         serviceName: istio-ingressgateway
+    #         servicePort: 443
   backend:
       serviceName: istio-ingressgateway
       servicePort: 15020
