@@ -65,11 +65,17 @@ spec:
   hosts:
   - "nginx.example.com"
   http:
-  - match:
-    - uri:
-        prefix: /
-      route:
-        - destination:
-            host: nginx.default.svc.cluster.local
-            port:
-              number: 80
+  - route:
+    - destination:
+        host: nginx.default.svc.cluster.local
+        port:
+          number: 80
+  # http:
+  # - match:
+  #   - uri:
+  #       prefix: /
+  #     route:
+  #       - destination:
+  #           host: nginx.default.svc.cluster.local
+  #           port:
+  #             number: 80
