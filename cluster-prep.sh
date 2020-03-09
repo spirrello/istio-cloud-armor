@@ -29,14 +29,25 @@ else
   fi
 fi
 
-echo "Creating clusterrolebinding"
 
-kubectl create clusterrolebinding cluster-admin-binding \
-    --clusterrole=cluster-admin \
-    --user=$(gcloud config get-value core/account)
 
-echo "labling default name space"
-kubectl label namespace default istio-injection=enabled
+CLUSTER_ROLE_STATUS=`k get clusterrolebinding | grep cluster-admin-binding`
+if [ -z "$CLUSTER_ROLE_STATUS" ]; then
+  echo "Creating clusterrolebinding"
+  kubectl create clusterrolebinding cluster-admin-binding \
+      --clusterrole=cluster-admin \
+      --user=$(gcloud config get-value core/account)
+else
+  echo "CLUSTER ROLE BINDING ALREADY EXISTS"
+fi
+
+NS_LABLE_STATUS=`kubectl get ns -l istio-injection | grep default`
+if [ -z "$NS_LABLE_STATUS" ]; then
+  echo "labling default name space"
+  kubectl label namespace default istio-injection=enabled
+else
+  echo "default namespace is already labeled"
+fi
 
 cd istio-$ISTIO_VERSION
 
