@@ -2,14 +2,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: istio
+  name: istio-heath-check
   namespace: istio-system
   #annotations:
     #kubernetes.io/ingress.global-static-ip-name: staging-test
 spec:
   backend:
       serviceName: istio-ingressgateway
-      servicePort: 80
+      servicePort: 15020
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -21,7 +21,7 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      number: 80
+      number: 15020
       name: http
       protocol: HTTP
     hosts:
