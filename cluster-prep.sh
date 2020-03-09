@@ -4,8 +4,7 @@ set -e
 
 PROJECT_NAME=$1
 CLUSTER_NAME=$2
-MASTER_CIDR=$3
-ISTIO_VERSION=$4
+ISTIO_VERSION="1.4.3"
 
 if [ -z "$PROJECT_NAME" ]; then
   echo "Please provide the project"
@@ -15,16 +14,12 @@ fi
 if [ -z "$CLUSTER_NAME" ]; then
   echo "Need a cluster name"
   exit 1
-fi
-
-if [ -z "$MASTER_CIDR" ]; then
-  echo "Setting MASTER_CIDR to 172.16.0.0/16"
-  MASTER_CIDR="172.16.0.0/16"
-fi
-
-if [ -z "$ISTIO_VERSION" ]; then
-  ISTIO_VERSION="1.4.3"
-  echo "Setting Istio to version $ISTIO_VERSION"
+else
+  CLUSTER_NAME_RESULT=`gcloud container clusters list --filter "name:$CLUSTER_NAME"`
+  if [ -z $CLUSTER_NAME_RESULT]; then
+     echo "$CLUSTER_NAME is not a valid cluster"
+     exit 1
+  fi
 fi
 
 
@@ -41,6 +36,10 @@ export PATH=$PWD/bin:$PATH
 istioctl manifest apply --set profile=demo
 
 #might need to run this in the case of timeouts for side car injection
+
+#fetch info then create firewall rule
+CLUSTER_REGION=`gcloud container clusters list --filter "name:sws-globalsre-cug01-qa" | grep -v NAME | awk '{print $2}'`
+MASTER_CIDR=`gcloud container clusters describe $CLUSTER_NAME --region $CLUSTER_REGION --format json | /usr/bin/jq .privateClusterConfig.masterIpv4CidrBlock`
 TARGET_TAG=`gcloud compute instances list --project $PROJECT_NAME --format=json | /usr/bin/jq '.[].tags.items[0]'|head -1`
 gcloud compute firewall-rules create allow-master-to-istiowebhook --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG
 
