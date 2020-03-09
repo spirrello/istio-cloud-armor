@@ -38,6 +38,13 @@ spec:
           backend:
             serviceName: istio-ingressgateway
             servicePort: 80
+    - host: nginx.example.com
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: istio-ingressgateway
+            servicePort: 443
   backend:
       serviceName: istio-ingressgateway
       servicePort: 15020
