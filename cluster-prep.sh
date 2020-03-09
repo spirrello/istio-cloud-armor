@@ -16,23 +16,26 @@ if [ -z "$CLUSTER_NAME" ]; then
   exit 1
 else
   CLUSTER_NAME_RESULT=`gcloud container clusters list --filter "name:$CLUSTER_NAME"`
-  if [ -z $CLUSTER_NAME_RESULT ]; then
+  if [ -z "$CLUSTER_NAME_RESULT" ]; then
      echo "$CLUSTER_NAME is not a valid cluster"
      exit 1
   fi
 fi
 
+echo "Creating clusterrolebinding"
 
 kubectl create clusterrolebinding cluster-admin-binding \
     --clusterrole=cluster-admin \
     --user=$(gcloud config get-value core/account)
 
+echo "labling default name space"
 kubectl label namespace default istio-injection=enabled
 
 cd istio-$ISTIO_VERSION
 
 export PATH=$PWD/bin:$PATH
 
+echo "deploying default profile of istio"
 istioctl manifest apply --set profile=demo
 
 #might need to run this in the case of timeouts for side car injection
