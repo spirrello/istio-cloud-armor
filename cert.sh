@@ -23,4 +23,11 @@ openssl req -out $CSR -newkey rsa:2048 -nodes \
 openssl x509 -req -days 365 -CA $CA_CERT -CAkey $CA_KEY \
 -set_serial 0 -in $CSR -out $CERT_NAME
 
-kubectl create secret tls $K8S_SECRET --cert=$CERT_NAME --key=$CERT_KEY
+CHECK_CERT=`openssl verify -verbose -CAfile $CA_CERT  $CERT_NAME`
+
+# Check if certificate is valid
+if [[ $CHECK_CERT == *"OK"* ]]; then
+  kubectl create secret tls $K8S_SECRET --cert=$CERT_NAME --key=$CERT_KEY
+else
+  echo "ERROR OCCURRED WHILE GENERATING CERTIFICATE"
+fi
