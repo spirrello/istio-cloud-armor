@@ -31,7 +31,7 @@ fi
 
 
 
-CLUSTER_ROLE_STATUS=`k get clusterrolebinding | grep cluster-admin-binding`
+CLUSTER_ROLE_STATUS=`kubectl get clusterrolebinding | grep cluster-admin-binding`
 if [ -z "$CLUSTER_ROLE_STATUS" ]; then
   echo "Creating clusterrolebinding"
   kubectl create clusterrolebinding cluster-admin-binding \
