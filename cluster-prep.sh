@@ -49,8 +49,11 @@ istioctl manifest apply --set profile=demo
 
 #fetch info then create firewall rule
 CLUSTER_REGION=`gcloud container clusters list --filter "name:$CLUSTER_NAME" | grep -v NAME | awk '{print $2}'`
-MASTER_CIDR=`gcloud container clusters describe $CLUSTER_NAME --region $CLUSTER_REGION --format json | /usr/bin/jq .privateClusterConfig.masterIpv4CidrBlock`
-TARGET_TAG=`gcloud compute instances list --project $PROJECT_NAME --format=json | /usr/bin/jq '.[].tags.items[0]'|head -1`
+echo "CLUSTER_REGION: $CLUSTER_REGION"
+MASTER_CIDR=`gcloud container clusters describe $CLUSTER_NAME --region $CLUSTER_REGION --format json | /usr/bin/jq -r .privateClusterConfig.masterIpv4CidrBlock`
+echo "MASTER_CIDR: $MASTER_CIDR"
+TARGET_TAG=`gcloud compute instances list --project $PROJECT_NAME --format=json | /usr/bin/jq -r '.[].tags.items[0]'|head -1`
+echo "TARGET_TAG: $TARGET_TAG"
 gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG
 
 INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
