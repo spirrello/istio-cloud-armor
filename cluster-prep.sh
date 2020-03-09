@@ -7,8 +7,14 @@ CLUSTER_NAME=$2
 ISTIO_VERSION="1.4.3"
 
 if [ -z "$PROJECT_NAME" ]; then
-  echo "Please provide the project"
+  echo "Need a valid project name"
   exit 1
+else
+  PROJECT_NAME_RESULT=`gcloud projects list --filter="name:$PROJECT_NAME"`
+  if [ -z "$PROJECT_NAME_RESULT" ]; then
+     echo "$PROJECT_NAME is not a valid project"
+     exit 1
+  fi
 fi
 
 if [ -z "$CLUSTER_NAME" ]; then
