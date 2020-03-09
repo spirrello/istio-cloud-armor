@@ -76,7 +76,7 @@ metadata:
   namespace: istio-system
 spec:
   gateways:
-  - health-gateway
+  - istio-gateway
   hosts:
   - '*'
   http:
