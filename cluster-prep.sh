@@ -72,7 +72,7 @@ NODE_POOL=`gcloud container node-pools list --region $CLUSTER_REGION --cluster $
 echo "NODE_POOL: $NODE_POOL"
 TARGET_TAG=`gcloud container node-pools describe $NODE_POOL --region us-central1 --cluster $CLUSTER_NAME --format json | jq -r .config.tags[0]`
 echo "TARGET_TAG: $TARGET_TAG"
-gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG
+gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG || FIREWALL_RULE_STATUS=$?
 
 #open the app to outside traffic
 kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
