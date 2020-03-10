@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
 
 PROJECT_NAME=$1
 CLUSTER_NAME=$2
@@ -46,6 +47,8 @@ if [ -z "$NS_LABEL_STATUS" ]; then
 else
   echo "default namespace is already labeled"
 fi
+
+set +x
 
 cd istio-$ISTIO_VERSION
 
