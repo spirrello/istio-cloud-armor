@@ -28,3 +28,6 @@ EOF
 kubectl -n istio-system patch svc istio-ingressgateway \
     --type=json -p="$(cat istio-ingress-patch.json)" \
     --dry-run=true -o yaml | kubectl apply -f -
+
+# apply gateway settings
+kubectl apply -f k8s/
