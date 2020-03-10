@@ -41,8 +41,8 @@ else
   echo "CLUSTER ROLE BINDING ALREADY EXISTS"
 fi
 
-NS_LABLE_STATUS=`kubectl get ns -l istio-injection | grep default`
-if [ -z "$NS_LABLE_STATUS" ]; then
+NS_LABEL_STATUS=`kubectl get ns -l istio-injection | grep default`
+if [ -z "$NS_LABEL_STATUS" ]; then
   echo "labling default name space"
   kubectl label namespace default istio-injection=enabled
 else
