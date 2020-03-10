@@ -49,7 +49,7 @@ else
 fi
 
 #download istio
-curl -L https://istio.io/downloadIstio | $ISTIO_VERSION sh -
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
 
 cd istio-$ISTIO_VERSION
 
