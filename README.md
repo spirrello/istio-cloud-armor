@@ -2,4 +2,4 @@
 
 
 ### If using GKE without Istio addon:
-./clulster-prep PROJECT CLUSTERNAME MASTER_CIDR ISTIO_VERSION
+./clulster-prep PROJECT CLUSTERNAME
