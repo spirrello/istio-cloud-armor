@@ -6,7 +6,8 @@ metadata:
   namespace: istio-system
 spec:
   gateways:
-  - health-istio-gateway
+  #- health-istio-gateway
+  - ingressgateway
   hosts:
   - '*'
   http:
