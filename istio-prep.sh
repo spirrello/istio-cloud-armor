@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "##############  backing up istio-ingressgateway service ##############"
+echo "############## backing up istio-ingressgateway service ##############"
 kubectl -n istio-system get svc istio-ingressgateway -o yaml > BACKUP-istio-ingressgateway.yaml
 
 echo "############## applying cloud armor backend config ##############"
