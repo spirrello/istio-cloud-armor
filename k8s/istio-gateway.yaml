@@ -52,24 +52,24 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: istio-gateway
+  name: health-istio-gateway
   namespace: istio-system
 spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "*"
-  - port:
-      number: 443
-      name: https
-      protocol: HTTP
-    hosts:
-    - "*"
+  # - port:
+  #     number: 80
+  #     name: http
+  #     protocol: HTTP
+  #   hosts:
+  #   - "*"
+  # - port:
+  #     number: 443
+  #     name: https
+  #     protocol: HTTP
+  #   hosts:
+  #   - "*"
   - port:
       number: 15020
       name: healthcheck
@@ -81,11 +81,11 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   annotations:
-  name: health
+  name: istio-health
   namespace: istio-system
 spec:
   gateways:
-  - istio-gateway
+  - health-istio-gateway
   hosts:
   - '*'
   http:
