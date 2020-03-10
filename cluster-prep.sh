@@ -32,16 +32,16 @@ fi
 
 
 
-CLUSTER_ROLE_STATUS=`kubectl get clusterrolebinding | grep cluster-admin-binding`
-if [ -z "$CLUSTER_ROLE_STATUS" ]; then
+CLUSTER_ROLE_STATUS=`kubectl get clusterrolebinding cluster-admin-binding`
+if [ $? > 0 ]; then
   echo "Creating clusterrolebinding"
   kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 else
   echo "CLUSTER ROLE BINDING ALREADY EXISTS"
 fi
 
-NS_LABEL_STATUS=`kubectl get ns -l istio-injection | grep default`
-if [ -z "$NS_LABEL_STATUS" ]; then
+NS_LABEL_STATUS=`kubectl get ns -l istio-injection`
+if [[ $NS_LABEL_STATUS == "No resources found." ]]; then
   echo "labling default name space"
   kubectl label namespace default istio-injection=enabled
 else
