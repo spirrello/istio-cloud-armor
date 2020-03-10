@@ -34,18 +34,18 @@ fi
 #check if cluster rolebinding exists
 kubectl get clusterrolebinding cluster-admin-binding || CLUSTER_ROLE_STATUS=$?
 if [ $CLUSTER_ROLE_STATUS > 0 ]; then
-  echo "Creating clusterrolebinding"
+  echo "############## Creating clusterrolebinding ##############"
   kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 else
-  echo "CLUSTER ROLE BINDING ALREADY EXISTS"
+  echo "############## clusterrolebinding already exists ##############"
 fi
 
 #label default namespace
 kubectl label namespace default istio-injection=enabled || NS_LABEL_STATUS=$?
 if [ $NS_LABEL_STATUS > 0 ]; then
-  echo "default namespace is already labeled"
+  echo "############## default namespace is already labeled ##############"
 else
-  echo "default namespace now labeled"
+  echo "############## default namespace now labeled ##############"
 fi
 
 #download istio
@@ -55,7 +55,7 @@ cd istio-$ISTIO_VERSION
 
 export PATH=$PWD/bin:$PATH
 
-echo "deploying default profile of istio"
+echo "############## deploying default profile of istio ##############"
 istioctl manifest apply --set profile=demo \
 --set values.grafana.enabled=true --set values.kiali.enabled=true \
 --set values.prometheus.enabled=true --set values.tracing.enabled=true
@@ -79,7 +79,7 @@ gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction
 #open the app to outside traffic
 kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 
-echo "sleeping for $SLEEP_TIME seconds to allow for warm up...."
+echo "############## sleeping for $SLEEP_TIME seconds to allow for warm up.... ##############"
 
 sleep $SLEEP_TIME
 
