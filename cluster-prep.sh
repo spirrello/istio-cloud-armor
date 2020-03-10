@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
 
 PROJECT_NAME=$1
 CLUSTER_NAME=$2
@@ -49,7 +48,8 @@ else
   echo "default namespace is already labeled"
 fi
 
-set +x
+#download istio
+curl -L https://istio.io/downloadIstio | $ISTIO_VERSION sh -
 
 cd istio-$ISTIO_VERSION
 
@@ -57,6 +57,9 @@ export PATH=$PWD/bin:$PATH
 
 echo "deploying default profile of istio"
 istioctl manifest apply --set profile=demo
+
+#deploy sample bookend app
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 
 #might need to run this in the case of timeouts for side car injection
 
