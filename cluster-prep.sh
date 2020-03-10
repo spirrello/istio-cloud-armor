@@ -7,6 +7,7 @@ PROJECT_NAME=$1
 CLUSTER_NAME=$2
 ISTIO_VERSION="1.4.3"
 FIREWALL_RULE="$CLUSTER_NAME-allow-master-to-istiowebhook"
+SLEEP_TIME="120"
 
 if [ -z "$PROJECT_NAME" ]; then
   echo "Need a valid project name"
@@ -67,6 +68,11 @@ echo "MASTER_CIDR: $MASTER_CIDR"
 TARGET_TAG=`gcloud compute instances list --project $PROJECT_NAME --format=json | /usr/bin/jq -r '.[].tags.items[0]'|head -1`
 echo "TARGET_TAG: $TARGET_TAG"
 gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG
+
+
+echo "sleeping for $SLEEP_TIME seconds to allow for warm up...."
+
+sleep $SLEEP_TIME
 
 INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
