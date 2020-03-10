@@ -31,7 +31,7 @@ else
 fi
 
 
-
+#check if cluster rolebinding exists
 kubectl get clusterrolebinding cluster-admin-binding || CLUSTER_ROLE_STATUS=$?
 if [ $CLUSTER_ROLE_STATUS > 0 ]; then
   echo "Creating clusterrolebinding"
@@ -40,12 +40,12 @@ else
   echo "CLUSTER ROLE BINDING ALREADY EXISTS"
 fi
 
-NS_LABEL_STATUS=`kubectl get ns -l istio-injection`
-if [[ $NS_LABEL_STATUS == *"No resources found"* ]]; then
-  echo "labling default name space"
-  kubectl label namespace default istio-injection=enabled
-else
+#label default namespace
+kubectl label namespace default istio-injection=enabled || NS_LABEL_STATUS=$?
+if [ $NS_LABEL_STATUS > 0 ]; then
   echo "default namespace is already labeled"
+else
+  echo "default namespace now labeled"
 fi
 
 #download istio
