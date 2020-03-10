@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# backup the istio-ingressgateway svc
+kubectl -n istio-system get svc istio-ingressgateway -o yaml > BACKUP-istio-ingressgateway.yaml
+
+
 # create patch to convert the service to type NodePort
 cat <<EOF > istio-ingress-patch.json
 [
