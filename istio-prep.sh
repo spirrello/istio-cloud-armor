@@ -19,7 +19,7 @@ cat <<EOF > istio-ingress-patch.json
   },
   {
     "op": "add",
-    "path": "/metadata/annotations/beta.cloud.google.com/backend-config",
+    "path": "/metadata/annotations/beta.cloud.google.com~1backend-config",
     "value": "{\"ports\": {\"$PORT\":\"$SECURITY_POLICY\"}}"
   },
   {
