@@ -1,6 +1,6 @@
 # Using Istio on GKE with Cloud Armor
 
-## This has only been tested without the Isito addon with GKE
+## This has only been tested in GKE without the Istio addon
 
 ### first create the Cloud Armor security policy in the GCP console
 
