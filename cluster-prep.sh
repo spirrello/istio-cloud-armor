@@ -41,7 +41,7 @@ else
 fi
 
 NS_LABEL_STATUS=`kubectl get ns -l istio-injection`
-if [[ $NS_LABEL_STATUS == "No resources found." ]]; then
+if [[ $NS_LABEL_STATUS == *"No resources found"* ]]; then
   echo "labling default name space"
   kubectl label namespace default istio-injection=enabled
 else
