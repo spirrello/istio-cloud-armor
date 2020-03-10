@@ -4,7 +4,8 @@ set -e
 
 PROJECT_NAME=$1
 CLUSTER_NAME=$2
-ISTIO_VERSION="1.4.3"
+ISTIO_VERSION=$3
+DEFAULT_ISTIO_VERSION="1.4.3"
 FIREWALL_RULE="$CLUSTER_NAME-allow-master-to-istiowebhook"
 SLEEP_TIME="120"
 
@@ -30,6 +31,12 @@ else
   fi
 fi
 
+if [ -z "$ISTIO_VERSION" ]; then
+  echo "############## Installing Istio 1.4.3 ##############"
+  ISTIO_VERSION=$DEFAULT_ISTIO_VERSION
+else
+  echo "Installing Istio $ISTIO_VERSION"
+fi
 
 #check if cluster rolebinding exists
 kubectl get clusterrolebinding cluster-admin-binding || CLUSTER_ROLE_STATUS=$?
@@ -64,7 +71,6 @@ istioctl manifest apply --set profile=demo \
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 
 #might need to run this in the case of timeouts for side car injection
-
 #fetch info then create firewall rule
 CLUSTER_REGION=`gcloud container clusters list --filter "name:$CLUSTER_NAME" | grep -v NAME | awk '{print $2}'`
 echo "CLUSTER_REGION: $CLUSTER_REGION"
