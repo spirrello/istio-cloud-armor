@@ -34,9 +34,7 @@ fi
 CLUSTER_ROLE_STATUS=`kubectl get clusterrolebinding | grep cluster-admin-binding`
 if [ -z "$CLUSTER_ROLE_STATUS" ]; then
   echo "Creating clusterrolebinding"
-  kubectl create clusterrolebinding cluster-admin-binding \
-      --clusterrole=cluster-admin \
-      --user=$(gcloud config get-value core/account)
+  kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 else
   echo "CLUSTER ROLE BINDING ALREADY EXISTS"
 fi
