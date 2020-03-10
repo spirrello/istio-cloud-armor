@@ -32,8 +32,8 @@ fi
 
 
 
-CLUSTER_ROLE_STATUS=`kubectl get clusterrolebinding cluster-admin-binding`
-if [ $? > 0 ]; then
+kubectl get clusterrolebinding cluster-admin-binding || CLUSTER_ROLE_STATUS=$?
+if [ $CLUSTER_ROLE_STATUS > 0 ]; then
   echo "Creating clusterrolebinding"
   kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
 else
