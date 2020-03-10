@@ -1,22 +1,3 @@
-# ---
-# apiVersion: extensions/v1beta1
-# kind: Ingress
-# metadata:
-#   name: istio-ingress
-#   namespace: istio-system
-#   #annotations:
-#     #kubernetes.io/ingress.global-static-ip-name: staging-test
-# spec:
-#   rules:
-#   - host: "*.example.com"
-#     http:
-#       paths:
-#       - backend:
-#           serviceName: istio-ingressgateway
-#           servicePort: 80
-#       - backend:
-#           serviceName: istio-ingressgateway
-#           servicePort: 443
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -38,16 +19,9 @@ spec:
           backend:
             serviceName: istio-ingressgateway
             servicePort: 80
-    # - host: nginx.example.com
-    #   http:
-    #     paths:
-    #     - path: /
-    #       backend:
-    #         serviceName: istio-ingressgateway
-    #         servicePort: 443
   backend:
       serviceName: istio-ingressgateway
-      servicePort: 15020
+      servicePort: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -58,24 +32,12 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  # - port:
-  #     number: 80
-  #     name: http
-  #     protocol: HTTP
-  #   hosts:
-  #   - "*"
-  # - port:
-  #     number: 443
-  #     name: https
-  #     protocol: HTTP
-  #   hosts:
-  #   - "*"
-  - port:
-      number: 15020
+  - hosts:
+    - '*'
+    port:
       name: healthcheck
+      number: 80
       protocol: HTTP
-    hosts:
-    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

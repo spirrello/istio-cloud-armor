@@ -56,7 +56,9 @@ cd istio-$ISTIO_VERSION
 export PATH=$PWD/bin:$PATH
 
 echo "deploying default profile of istio"
-istioctl manifest apply --set profile=demo
+istioctl manifest apply --set profile=demo \
+--set values.grafana.enabled=true --set values.kiali.enabled=true \
+--set values.prometheus.enabled=true --set values.tracing.enabled=true
 
 #deploy sample bookend app
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
