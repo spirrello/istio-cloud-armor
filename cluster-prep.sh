@@ -83,19 +83,8 @@ echo "TARGET_TAG: $TARGET_TAG"
 gcloud compute firewall-rules create $FIREWALL_RULE --allow=tcp:9443 --direction=INGRESS --enable-logging --source-ranges=$MASTER_CIDR --target-tags=$TARGET_TAG || FIREWALL_RULE_STATUS=$?
 
 #open the app to outside traffic
+echo "############## deploying bookinfo-gateway ##############"
 kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 
-echo "############## sleeping for $SLEEP_TIME seconds to allow for warm up.... ##############"
-
-sleep $SLEEP_TIME
-
-INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
-SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
-GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-
-echo "INGRESS_PORT=$INGRESS_PORT"
-
-echo "SECURE_INGRESS_PORT=$SECURE_INGRESS_PORT"
-
-echo "http://$GATEWAY_URL/productpage"
+echo "############## Finished ##############"
+echo "Script completed successfully, if this is a new build the cluster is ready for istio.prep.sh"
