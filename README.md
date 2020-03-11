@@ -33,7 +33,7 @@
 
 - backup istio-ingressgateway service before making changes
 
-- creates backend config for Cloud Armor *the security policy must exist ahead of time*
+- creates backend config for Cloud Armor, **the security policy must exist ahead of time**
 
 - patches istio ingress gateway service to be of type NodePort and applies backend config for Cloud Armor
 
