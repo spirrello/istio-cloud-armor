@@ -8,7 +8,7 @@
 
 - GKE cluster
 
-### prep the cluster
+### First, prep the cluster
 
 `clulster-prep` script will make the following modifications:
 
@@ -27,9 +27,11 @@
 
 ```
 
-### prep Istio for Cloud Armor
+### Second, prep Istio for Cloud Armor
 
 `istio-prep` will make the following modifications:
+
+- backup istio-ingressgateway service before making changes
 
 - creates backend config for Cloud Armor *the security policy must exist ahead of time*
 
