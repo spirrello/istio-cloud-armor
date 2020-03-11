@@ -2,7 +2,11 @@
 
 ## This has only been tested in GKE without the Istio addon
 
-### first create the Cloud Armor security policy in the GCP console
+### Requirements
+
+- An existing Cloud Armor policy.  Using `cloudarmor-test` in this example.
+
+- GKE cluster
 
 ### prep the cluster
 
