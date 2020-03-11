@@ -4,13 +4,11 @@ kind: Ingress
 metadata:
   name: istio-ingress
   namespace: istio-system
-  #annotations:
-    #kubernetes.io/ingress.global-static-ip-name: staging-test
 spec:
-  # tls:
-  # - hosts:
-  #   - nginx.example.com
-  #   secretName: testsecret-tls
+  tls:
+  - hosts:
+    - nginx.example.com
+    secretName: istio-ingressgateway-certs
   rules:
     - host: nginx.example.com
       http:
@@ -32,12 +30,12 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - hosts:
-    - '*'
-    port:
+  - port:
       name: healthcheck
       number: 80
       protocol: HTTP
+    hosts:
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -67,3 +65,34 @@ spec:
         host: istio-ingressgateway.istio-system.svc.cluster.local
         port:
           number: 15020
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  labels:
+    operator.istio.io/component: IngressGateway
+    operator.istio.io/managed: Reconcile
+    operator.istio.io/version: 1.4.3
+    release: istio
+  name: ingressgateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      name: http
+      number: 80
+      protocol: HTTP
+    hosts:
+    - '*'
+  - port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+    hosts:
+    - '*'

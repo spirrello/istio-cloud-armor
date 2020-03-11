@@ -12,7 +12,7 @@ CERT_CN="nginx.example.com"
 CERT_KEY="nginx.example.com.key"
 CERT_NAME="nginx.example.com.crt"
 CERT_ORG="SOME ORG"
-K8S_SECRET="testsecret-tls"
+K8S_SECRET="istio-ingressgateway-certs"
 
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
 -subj "/O=$ORG Inc./CN=$CN" -keyout $CA_KEY -out $CA_CERT
