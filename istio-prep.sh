@@ -28,6 +28,11 @@ cat <<EOF > istio-ingress-patch.json
     "value": "{\"ports\": {\"$PORT\":\"$SECURITY_POLICY\"}}"
   },
   {
+    "op": "add",
+    "path": "/metadata/annotations/cloud.google.com~1app-protocols",
+    "value": "{\"http2\": \"HTTP\", \"https\":\"HTTPS\"}"
+  },
+  {
     "op": "replace",
     "path": "/spec/type",
     "value": "NodePort"
@@ -47,7 +52,7 @@ kubectl -n istio-system patch svc istio-ingressgateway \
 echo "############## apply gateway settings and set up telemetry ##############"
 kubectl apply -f k8s/
 
-echo "############## Script completed successfully but it might take a few minutes for the HTTP LB to instantiate. Sleeping for $SLEEP_TIME seconds ##############"
+echo "############## Script completed successfully but it might take a few minutes for the HTTP LB to be available. Sleeping for $SLEEP_TIME seconds ##############"
 
 sleep $SLEEP_TIME
 
