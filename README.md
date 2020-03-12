@@ -17,7 +17,7 @@
 
 ### First, prep the cluster
 
-`clulster-prep` script will make the following modifications:
+`cluster-prep` script will make the following modifications:
 
 - create a clusterbinding, `cluster-admin-binding`
 
