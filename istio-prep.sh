@@ -44,6 +44,9 @@ cat <<EOF > istio-ingress-patch.json
 ]
 EOF
 
+echo "############## generating certs ##############"
+./cert.sh
+
 echo "############## applying patch to istio gateway service ##############"
 kubectl -n istio-system patch svc istio-ingressgateway \
     --type=json -p="$(cat istio-ingress-patch.json)" \
