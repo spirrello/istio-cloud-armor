@@ -52,10 +52,4 @@ kubectl -n istio-system patch svc istio-ingressgateway \
 echo "############## apply gateway settings and set up telemetry ##############"
 kubectl apply -f k8s/
 
-echo "############## Script completed successfully but it might take a few minutes for the HTTP LB to be available. Sleeping for $SLEEP_TIME seconds ##############"
-
-sleep $SLEEP_TIME
-
-INGRESS_IP=$(kubectl -n istio-system get ing istio-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-
-echo "INGRESS IP AND PORT: $INGRESS_IP:$PORT"
+echo "############## Script completed successfully but it might take a few minutes for the HTTP LB to be available. ##############"

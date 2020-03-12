@@ -1,6 +1,13 @@
 # Using Istio on GKE with Cloud Armor
 
-## This has only been tested in GKE without the Istio addon
+## Disclaimer
+
+- This effort is still underway and requires additional work to enable full E2E encryption from HTTPS Load Balancer to the Istio Gateway.
+
+- In this example we're terminating TLS at the HTTPS Load Balancer and passing traffic through the gateway in plain HTTP.
+
+- This has only been tested in GKE without the Istio addon.
+
 
 ### Requirements
 

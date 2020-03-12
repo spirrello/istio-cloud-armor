@@ -19,7 +19,7 @@ spec:
             servicePort: 80
   backend:
       serviceName: istio-ingressgateway
-      servicePort: 80
+      servicePort: 443
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -30,12 +30,22 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:
-      name: healthcheck
+  - hosts:
+    - '*'
+    port:
+      name: healthcheck-https
+      number: 443
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+  - hosts:
+    - '*'
+    port:
+      name: healthcheck-http
       number: 80
       protocol: HTTP
-    hosts:
-    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -50,19 +60,25 @@ spec:
   - '*'
   http:
   - match:
+    - uri:
+        exact: /istiohealth/healthz/ready
+      method:
+        exact: GET
     - headers:
         user-agent:
           prefix: GoogleHC
       method:
         exact: GET
       uri:
-        exact: /
+          exact: /
     rewrite:
-      authority: istio-ingressgateway.istio-system.svc.cluster.local:15020
+      #authority: istio-ingressgateway.istio-system.svc.cluster.local:15020
+      authority: istio-ingressgateway:15020
       uri: /healthz/ready
     route:
     - destination:
-        host: istio-ingressgateway.istio-system.svc.cluster.local
+        #host: istio-ingressgateway.istio-system.svc.cluster.local
+        host: istio-ingressgateway
         port:
           number: 15020
 ---
